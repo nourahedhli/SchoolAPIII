@@ -27,6 +27,8 @@ namespace SchoolAPIII.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrganizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -52,13 +54,13 @@ namespace SchoolAPIII.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "OrganizationId", "UserName" },
+                columns: new[] { "UserId", "FirstName", "LastName", "OrganizationId", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "nh98" },
-                    { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "nouramahel" },
-                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "nouraHedhli" },
-                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479812"), new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "nouraHedhli" }
+                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), null, null, new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "nh98" },
+                    { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), null, null, new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "nouramahel" },
+                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), null, null, new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "nouraHedhli" },
+                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479812"), null, null, new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "nouraHedhli" }
                 });
 
             migrationBuilder.CreateIndex(
