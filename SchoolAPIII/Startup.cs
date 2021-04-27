@@ -1,17 +1,14 @@
-
-
+using AutoMapper;
 using SchoolAPIII.Extensions;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using System.IO;
 
-namespace SchoolAPIII
+namespace SchoolAPI
 {
     public class Startup
     {
@@ -29,6 +26,8 @@ namespace SchoolAPIII
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
         }
 
@@ -39,8 +38,6 @@ namespace SchoolAPIII
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
