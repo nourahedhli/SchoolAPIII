@@ -28,8 +28,15 @@ namespace Entities.Configuration
                      Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"),
                      UserName = "nouraHedhli",
                      OrganizationId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3")
-                 }
-                 
+                 },
+
+
+                   new User
+                   {
+                       Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479812"),
+                       UserName = "nouraHedhli",
+                       OrganizationId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3")
+                   }
 
             );
         }
