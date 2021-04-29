@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net;
 
 
-namespace SchoolAPI.Extensions
+namespace SchoolAPIII.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {

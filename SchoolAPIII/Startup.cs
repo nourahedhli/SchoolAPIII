@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
-using SchoolAPI.Extensions;
+
 using SchoolAPIII.Extensions;
 using System.IO;
 
@@ -32,10 +32,10 @@ namespace SchoolAPIII
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
-            services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
-            {
+            services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options => {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.ConfigureSwagger();
             services.AddControllers();
         }
 
@@ -50,7 +50,10 @@ namespace SchoolAPIII
             {
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(s => {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "School API v1");
+            });
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
