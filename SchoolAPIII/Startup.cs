@@ -1,15 +1,22 @@
-using AutoMapper;
+using System;
 using Contracts;
+using SchoolAPIII.Extensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NLog;
-
-using SchoolAPIII.Extensions;
 using System.IO;
+using ActionFilters;
+using Microsoft.IdentityModel.Logging;
 
 namespace SchoolAPIII
 {
@@ -31,12 +38,30 @@ namespace SchoolAPIII
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+
+            services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
             services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options => {
                 options.SuppressModelStateInvalidFilter = true;
             });
             services.ConfigureSwagger();
-            services.AddControllers();
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+
+            }).AddXmlDataContractSerializerFormatters()
+            .AddCustomCSVFormatter();
+
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateOrganizationAttribute>();
+            services.AddScoped<ValidateUserAttribute>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+            services.AddAuthentication();
+            IdentityModelEventSource.ShowPII = true;
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,13 +75,14 @@ namespace SchoolAPIII
             {
                 app.UseHsts();
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(s => {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "School API v1");
-            });
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(s => {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "School APIII v1");
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -67,12 +93,15 @@ namespace SchoolAPIII
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using Entities.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Entities.Models;
+using Entities.RequestFeatures;
 
 namespace Contracts
 {
     public interface IUserRepository
     {
+       // PagedList<User> GetAllUsers(UserParameters userParameters, bool trackChanges);
+        User GetUser(Guid userId, bool trackChanges);
         IEnumerable<User> GetAllUsers(bool trackChanges);
-        User GetUser(Guid Id, bool trackChanges);
-
-        void CreateUser(User user);
-
-        IEnumerable<User> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
-
         void DeleteUser(User user);
+        void CreateUser(User user);
     }
 }

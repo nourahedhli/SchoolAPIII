@@ -1,6 +1,10 @@
-﻿using AutoMapper;
-using Entities.DataTransferObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Entities.Models;
+using Entities.DataTransferObjects;
 
 namespace SchoolAPIII
 {
@@ -8,19 +12,21 @@ namespace SchoolAPIII
     {
         public MappingProfile()
         {
-            CreateMap<Organization, OrganizationDto>()
-                    .ForMember(c => c.FullAddress,
-                        opt => opt.MapFrom(x => string.Join(", ", x.City, x.Country)));
 
-            CreateMap<User, UserDto>()
-                    .ForMember(c => c.FullName,
-                        opt => opt.MapFrom(x => string.Join(", ", x.FirstName, x.LastName)));
+            CreateMap<Organization, OrganizationDto>()
+                .ForMember(c => c.FullAddress,
+                    opt => opt.MapFrom(x => string.Join(' ', x.City, x.Country)));
 
             CreateMap<OrganizationForCreationDto, Organization>();
             CreateMap<OrganizationForUpdateDto, Organization>();
 
+            CreateMap<User, UserDto>();
+
             CreateMap<UserForCreationDto, User>();
             CreateMap<UserForUpdateDto, User>();
+            CreateMap<UserForRegistrationDto, User>();
+
+
         }
     }
 }
